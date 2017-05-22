@@ -36,9 +36,10 @@ function emitPuff() {
   puff.classList.add("smoke");
   puff.classList.add("under");
   puff.style.backgroundSize = "contain";
-  puff.style.left = Math.random() * 1000;
-  puff.style.width = Math.random() * (window.innerWidth - 400) + 200;
+  puff.style.left = Math.random() * (window.innerWidth - 600) + 200;
+  puff.style.width = Math.random() * 300 + 300;
   puff.style.height = Math.random() * 300 + 300;
+  puff.style.transform = "rotate(" + Math.floor(Math.random() * 360) + "deg)";
 
   var viewport = document.getElementById("viewport");
   viewport.appendChild(puff);
@@ -48,7 +49,7 @@ function emitPuff() {
 
 function emitLoop() {
   emitPuff();
-  setTimeout(emitLoop, Math.random() * 2000);
+  setTimeout(emitLoop, Math.random() * 800);
 }
 
 $(function () {
@@ -68,6 +69,7 @@ body {
   text-align: center;
   color: grey
   height: 100%;
+  font-family: Antic, sans-serif;
 }
 
 #wrap {
@@ -90,7 +92,7 @@ body {
   background: url('smoke.png') no-repeat;
   bottom: 150px;
   margin-left: 0;
-  animation-name: rise;
+  animation-name: rise, spin;
   animation-duration: 40s;
   transition: opacity 2s linear;
 }
@@ -117,16 +119,24 @@ body {
   }
 }
 
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .logo {
   position: relative;
   margin-top: 80px;
+  height: 600px;
+  max-width: 80%;
 }
 
 .command-line {
   position: relative;
   font-family: Consolas, monospace;
   font-size: 24px;
-  background-color: black;
+  background: none;
   color: white;
   width: 400px;
   border-color: white;
@@ -136,14 +146,18 @@ body {
   padding: 8px;
 }
 
+.command-line:focus {
+  outline: none;
+}
+
 .hint {
-  font-family: Antic, sans-serif;
   position: relative;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 nav.links {
+  z-index: 2;
   position: absolute;
   top: 0;
   left: 0;
