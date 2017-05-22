@@ -7,6 +7,7 @@
 <script src="shen.js"></script>
 <script>
 var puffs = [];
+var emission = true;
 
 function detatch(element) {
   element.parentNode.removeChild(element);
@@ -18,8 +19,7 @@ function vertical(element) {
 
 function prunePuffs() {
   for (var i = 0; i < puffs.length; ++i) {
-    var top = vertical(puffs[i]);
-    if (top < -400) {
+    if (vertical(puffs[i]) < -puffs[i].style.height) {
       detatch(puffs[i]);
       puffs.splice(i, 1);
     }
@@ -36,9 +36,10 @@ function emitPuff() {
   puff.classList.add("smoke");
   puff.classList.add("under");
   puff.style.backgroundSize = "contain";
-  puff.style.left = Math.random() * (window.innerWidth - 600) + 200;
   puff.style.width = Math.random() * 300 + 300;
   puff.style.height = Math.random() * 300 + 300;
+  puff.style.left = Math.random() * (window.innerWidth - 600) + 100;
+  puff.style.top = window.innerHeight + puff.style.top;
   puff.style.transform = "rotate(" + Math.floor(Math.random() * 360) + "deg)";
 
   var viewport = document.getElementById("viewport");
@@ -48,7 +49,9 @@ function emitPuff() {
 }
 
 function emitLoop() {
-  emitPuff();
+  if (emission) {
+    emitPuff();
+  }
   setTimeout(emitLoop, Math.random() * 800);
 }
 
@@ -56,7 +59,21 @@ $(function () {
   emitLoop();
   pruneLoop();
   $("code").on("click", function (e) {
-    $(".command-line").val(e.target.textContent);
+    $("#command-line").val(e.target.textContent);
+  });
+  $("kbd").on("click", function (e) {
+    console.log("submit command");
+    var keyCode = e.target.textContent;
+    if (keyCode === "Enter") {
+      var keypress= $.Event("keypress");
+      keypress.which = 13;
+      $("#command-line").trigger(keypress);
+    }
+  });
+  $(window).focus(function() {
+    emission = true;
+  }).blur(function() {
+    emission = false;
   });
 });
 </script>
@@ -110,11 +127,11 @@ body {
     top: 1400px;
     opacity: 1;
   }
-  50% {
+  25% {
     opacity: 1;
   }
   100% {
-    top: -800px;
+    top: -1000px;
     opacity: 0;
   }
 }
@@ -177,6 +194,7 @@ code {
 kbd {
   font-family: monospace;
   color: #aaaacc;
+  cursor: pointer;
 }
 </style>
 </head>
