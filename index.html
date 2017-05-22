@@ -6,21 +6,14 @@
 <link href="https://fonts.googleapis.com/css?family=Antic" rel="stylesheet">
 <script src="shen.js"></script>
 <script>
+
 var puffs = [];
 var emission = true;
 
-function detatch(element) {
-  element.parentNode.removeChild(element);
-}
-
-function vertical(element) {
-  return $(element).offset().top;
-}
-
 function prunePuffs() {
   for (var i = 0; i < puffs.length; ++i) {
-    if (vertical(puffs[i]) < -puffs[i].style.height) {
-      detatch(puffs[i]);
+    if ($(puffs[i]).offset().top < -400) {
+      puffs[i].parentNode.removeChild(puffs[i]);
       puffs.splice(i, 1);
     }
   }
@@ -36,15 +29,14 @@ function emitPuff() {
   puff.classList.add("smoke");
   puff.classList.add("under");
   puff.style.backgroundSize = "contain";
+  puff.style.animationName = (Math.random() < 0.5) ? "rise, spin" : "rise, spin-backward";
   puff.style.width = Math.random() * 300 + 300;
   puff.style.height = Math.random() * 300 + 300;
   puff.style.left = Math.random() * (window.innerWidth - 600) + 100;
   puff.style.top = window.innerHeight + puff.style.top;
   puff.style.transform = "rotate(" + Math.floor(Math.random() * 360) + "deg)";
-
   var viewport = document.getElementById("viewport");
   viewport.appendChild(puff);
-
   puffs.push(puff);
 }
 
@@ -82,9 +74,9 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: black;
+  background: #070707;
   text-align: center;
-  color: grey
+  color: #eeeeee;
   height: 100%;
   font-family: Antic, sans-serif;
 }
@@ -109,8 +101,7 @@ body {
   background: url('smoke.png') no-repeat;
   bottom: 150px;
   margin-left: 0;
-  animation-name: rise, spin;
-  animation-duration: 40s;
+  animation-duration: 45s;
   transition: opacity 2s linear;
 }
 
@@ -124,14 +115,13 @@ body {
 
 @keyframes rise {
   0% {
-    top: 1400px;
     opacity: 1;
   }
   25% {
     opacity: 1;
   }
   100% {
-    top: -1000px;
+    top: -1600px;
     opacity: 0;
   }
 }
@@ -139,6 +129,12 @@ body {
 @keyframes spin {
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-backward {
+  100% {
+    transform: rotate(-360deg);
   }
 }
 
@@ -154,9 +150,9 @@ body {
   font-family: Consolas, monospace;
   font-size: 24px;
   background: none;
-  color: white;
+  color: #eeeeee;
   width: 400px;
-  border-color: white;
+  border-color: #eeeeee;
   border-width: 0;
   border-bottom-width: 1px;
   border-radius: 8px;
@@ -169,7 +165,7 @@ body {
 
 .hint {
   position: relative;
-  color: white;
+  color: #eeeeee;
   font-size: 18px;
 }
 
@@ -178,11 +174,11 @@ nav.links {
   position: absolute;
   top: 0;
   left: 0;
-  color: white;
+  color: #aaaaaa;
 }
 
 nav.links a:visited {
-  color: white;
+  color: #999999;
 }
 
 code {
