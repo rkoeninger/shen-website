@@ -55,6 +55,9 @@ function emitLoop() {
 $(function () {
   emitLoop();
   pruneLoop();
+  $("code").on("click", function (e) {
+    $(".command-line").val(e.target.textContent);
+  });
 });
 </script>
 <style>
@@ -161,6 +164,7 @@ nav.links a:visited {
 code {
   font-family: Consolas, monospace;
   color: #aaccaa;
+  cursor: pointer;
 }
 
 kbd {
