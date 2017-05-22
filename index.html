@@ -10,9 +10,15 @@
 var puffs = [];
 var emission = true;
 
+var smokeMargin = 200;
+var smokeSizeMax = 600;
+var smokeSizeMin = 300;
+var smokeDelayAverage = 400;
+var smokePruneThreshold = -600;
+
 function prunePuffs() {
   for (var i = 0; i < puffs.length; ++i) {
-    if ($(puffs[i]).offset().top < -400) {
+    if ($(puffs[i]).offset().top < smokePruneThreshold) {
       puffs[i].parentNode.removeChild(puffs[i]);
       puffs.splice(i, 1);
     }
@@ -21,20 +27,25 @@ function prunePuffs() {
 
 function pruneLoop() {
   prunePuffs();
-  setTimeout(pruneLoop, 500);
+  setTimeout(pruneLoop, smokeDelayAverage);
 }
 
 function emitPuff() {
+  var spinDirection = Math.random() < 0.5;
+  var size = smokeSizeMin + Math.random() * (smokeSizeMax - smokeSizeMin);
+  var x = smokeMargin + Math.random() * (window.innerWidth - smokeMargin * 2) - (size / 2);
+  var y = window.innerHeight + size;
+  var rotation = Math.floor(Math.random() * 360);
   var puff = document.createElement("DIV");
   puff.classList.add("smoke");
   puff.classList.add("under");
   puff.style.backgroundSize = "contain";
-  puff.style.animationName = (Math.random() < 0.5) ? "rise, spin" : "rise, spin-backward";
-  puff.style.width = Math.random() * 300 + 300;
-  puff.style.height = Math.random() * 300 + 300;
-  puff.style.left = Math.random() * (window.innerWidth - 600) + 100;
-  puff.style.top = window.innerHeight + puff.style.top;
-  puff.style.transform = "rotate(" + Math.floor(Math.random() * 360) + "deg)";
+  puff.style.animationName = "rise, " + (spinDirection ? "spin" : "spin-backward");
+  puff.style.width = size;
+  puff.style.height = size;
+  puff.style.left = x;
+  puff.style.top = y;
+  puff.style.transform = "rotate(" + rotation + "deg)";
   var viewport = document.getElementById("viewport");
   viewport.appendChild(puff);
   puffs.push(puff);
@@ -44,7 +55,7 @@ function emitLoop() {
   if (emission) {
     emitPuff();
   }
-  setTimeout(emitLoop, Math.random() * 800);
+  setTimeout(emitLoop, Math.random() * smokeDelayAverage * 2);
 }
 
 $(function () {
