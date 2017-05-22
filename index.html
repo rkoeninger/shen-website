@@ -4,70 +4,56 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="shen.js"></script>
 <script>
-$(function() {
+var puffs = [];
 
-  // var puffs = [];
+function detatch(element) {
+  element.parentNode.removeChild(element);
+}
 
-  // function prunePuffs() {
-  //   for (var i = 0; i < puffs.length; ++i) {
-  //     if (puffs[i]) {
+function vertical(element) {
+  return $(element).offset().top;
+}
 
-  //     }
-  //   }
-  // }
-
-  // function loopPuffs() {
-  //   emitPuff();
-  //   setTimeout(loopPuffs, Math.random() * 3000);
-  // }
-
-  // function emitPuff() {
-    
-  // }
-
-    function puffLoop() {
-      var duration = Math.random() * 1e3 + 35e3;
-      var puffDiv = $("<div />", {
-          "class": "smoke under",
-          css: {
-              backgroundSize: "contain",
-              left: Math.random() * 1e3,
-              width: Math.random() * 400 + 400,
-              height: Math.random() * 300 + 300
-          }
-      });
-      $(puffDiv).addClass("animated");
-      $(puffDiv).addClass("zoomIn");
-      $(puffDiv).addClass("rollOut");
-      $(puffDiv).appendTo("#viewport");
-      // $.when(
-      // 	$(puffDiv).animate({}, {
-      //       duration: duration / 2,
-      //       easing: "linear",
-      //       queue: false,
-      //       complete: function() {
-      //           $(puffDiv).animate({}, {
-      //               duration: duration / 2,
-      //               easing: "linear",
-      //               queue: false
-      //           });
-      //       }
-      //   }),
-      //   $(puffDiv).animate({
-      //       bottom: $("#viewport").height()
-      //   }, {
-      //       duration: duration,
-      //       easing: "linear",
-      //       queue: false
-      //   })).then(function() {
-      //       $(puffDiv).remove();
-      //       puffLoop();
-      //   });
+function prunePuffs() {
+  for (var i = 0; i < puffs.length; ++i) {
+    var top = vertical(puffs[i]);
+    if (top < -400) {
+      console.log("prune");
+      detatch(puffs[i]);
+      puffs.splice(i, 1);
     }
-    var n = 10;
-    for (var a = 0; a < n; a += 1) {
-        setTimeout(puffLoop, Math.random() * n * 5e2);
-    }
+  }
+}
+
+function pruneLoop() {
+  prunePuffs();
+  setTimeout(pruneLoop, 500);
+}
+
+function emitPuff() {
+  console.log("emit");
+  var puff = document.createElement("DIV");
+  puff.classList.add("smoke");
+  puff.classList.add("under");
+  puff.style.backgroundSize = "contain";
+  puff.style.left = Math.random() * 1000;
+  puff.style.width = Math.random() * (window.innerWidth - 400) + 200;
+  puff.style.height = Math.random() * 300 + 300;
+
+  var viewport = document.getElementById("viewport");
+  viewport.appendChild(puff);
+
+  puffs.push(puff);
+}
+
+function emitLoop() {
+  emitPuff();
+  setTimeout(emitLoop, Math.random() * 2000);
+}
+
+$(function () {
+  emitLoop();
+  pruneLoop();
 });
 </script>
 <style>
@@ -79,39 +65,6 @@ body {
   text-align: center;
   color: grey
   height: 100%;
-}
-
-body {
-  -moz-animation-duration: 10s;
-  -webkit-animation-duration: 10s;
-  animation-duration: 10s;
-  -moz-animation-fill-mode: both;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-
-.logo {
-	position: relative;
-	margin-top: 80px;
-}
-
-.command-line {
-  position: relative;
-	font-family: Consolas, monospace;
-	font-size: 24px;
-	background-color: black;
-	color: white;
-	width: 400px;
-	border-color: white;
-	border-width: 1px;
-	border-radius: 8px;
-	padding: 8px;
-}
-
-.hint {
-  position: relative;
-	color: white;
-	font-size: 16px;
 }
 
 #wrap {
@@ -127,7 +80,7 @@ body {
   overflow: hidden;
 }
 
-#viewport .smoke {
+.smoke {
   position: absolute;
   width: 250px;
   height: 250px;
@@ -135,18 +88,8 @@ body {
   bottom: 150px;
   margin-left: 0;
   animation-name: rise;
-  animation-duration: 30s;
-}
-
-nav.links {
-	position: absolute;
-	top: 0;
-	left: 0;
-	color: white;
-}
-
-nav.links a:visited {
-  color: white;
+  animation-duration: 40s;
+  transition: opacity 2s linear;
 }
 
 .over {
@@ -162,10 +105,65 @@ nav.links a:visited {
     top: 1400px;
     opacity: 1;
   }
+  50% {
+    opacity: 1;
+  }
   100% {
-    top: -400px;
+    top: -800px;
     opacity: 0;
   }
+}
+
+.logo {
+  position: relative;
+  margin-top: 80px;
+}
+
+.command-line {
+  position: relative;
+  font-family: Consolas, monospace;
+  font-size: 24px;
+  background-color: black;
+  color: white;
+  width: 400px;
+  border-color: white;
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.hint {
+  position: relative;
+  color: white;
+  font-size: 16px;
+}
+
+nav.links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+}
+
+nav.links a:visited {
+  color: white;
+}
+
+.prompt {
+  color: white;
+  font-size: 24px;
+  margin-right: 4px;
+}
+
+code {
+  font-family: Consolas, monospace;
+  color: #aaccaa;
+}
+
+kbd {
+  font-family: monospace;
+  color: #aaaacc;
 }
 </style>
 </head>
@@ -179,9 +177,10 @@ nav.links a:visited {
       <img class="logo over" src="shen.svg">
       <br>
       <p class="hint over">
-        When you are ready to begin, type <code>(enlighten me)</code> below and hit <kbd>Enter</kbd>.
+        Type <code>(enlighten me)</code> below and hit <kbd>Enter</kbd> to begin your journey.
       </p>
       <br>
+      <span class="prompt">神</span>
       <input class="command-line over" id="command-line">
     </div>
   </div>
