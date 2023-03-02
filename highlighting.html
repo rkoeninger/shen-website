@@ -1,0 +1,117 @@
+<head><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Sans|Fira+Mono"></head>
+<body>
+<style>
+code {
+  font-family: 'Fira Mono', monospace;
+  cursor: default;
+  width: 100%;
+}
+pre {
+  font-size: 28px;
+  text-align: left;
+  color: #333;
+  max-height: 512px;
+  width: calc(100% - 52px);
+  margin: 16px;
+  padding: 8px;
+}
+#tooltip-area {
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 20px;
+  max-width: 500px;
+}
+#tooltip-area [data-tooltip] {
+  margin: 1em;
+}
+code .keyword {
+  color: #33c;
+}
+code .operator {
+  color: #3a3;
+}
+code .variable {
+  color: #c33;
+}
+code .literal {
+  color: #c3c;
+}
+code .empty-list {
+}
+code .wildcard {
+}
+code .identifier.glow, div[data-tooltip] code .identifier {
+  background-color: #ccc;
+}
+code .bracket.glow, div[data-tooltip] code .bracket {
+  background-color: #ccc;
+}
+code .variable.glow, div[data-tooltip] code .variable {
+  background-color: #fcc;
+}
+code .operator.glow, div[data-tooltip] code .operator {
+  background-color: #afa;
+}
+code .keyword.glow, div[data-tooltip] code .keyword {
+  background-color: #ccf;
+}
+code .literal.glow, div[data-tooltip] code .literal {
+  background-color: #fcf;
+}
+code .empty-list.glow, div[data-tooltip] code .empty-list {
+  background-color: #ccc;
+}
+code .wildcard.glow, div[data-tooltip] code .wildcard {
+  background-color: #ccc;
+}
+code .clause.glow, div[data-tooltip] code .clause {
+  background-color: #cff;
+}
+</style>
+<div>
+<pre><code>
+<span class="bracket" data-name="() 1"><div data-tooltip>Function calls and special forms are surrounded in parenthesis.</div>(</span><span class="keyword" data-name="define"><div data-tooltip>The <code><span class="keyword">define</span></code> keyword indicates a global function definition.</div>define</span> <span class="identifier" data-name="element?"><div data-tooltip><code><span class="identifier">element?</span></code> is the name of this function. Because it only calls itself in tail position, it is tail recursive.</div>element?</span>
+<span class="clause" data-name="#clause 1"><div data-tooltip>The first clause applies if the second argument is an empty list and then returns <code><span class="literal">false</span></span></code>.</div>  <span class="wildcard" data-name="_ 1"><div data-tooltip>The <code><span class="wildcard">_</span></code> is the wildcard pattern which will match any argument in that position.</div>_</span> <span class="empty-list" data-name="[] 0"><div data-tooltip>An empty list pattern. Argument is matched when it is an empty list.</div>[]</span>      <span class="operator" data-name="->"><div data-tooltip>The <code><span class="operator">-&gt;</span></code> operator separates the parameter patterns from the body action in a clause.</div>-&gt;</span> <span class="literal" data-name="false 1"><div data-tooltip>The literal boolean false value in Shen is just the symbol <code><span class="literal">false</span></code>. But it won't be considered a symbol by the <code><span class="identifier">symbol?</span></code> function.</div>false</span></span>
+<span class="clause" data-name="#clause 2"><div data-tooltip>The second clause applies if the second argument is a non-empty list with a first element that is equal to the first argument and then returns <code><span class="literal">true</span></code>.</div>  <span class="variable" data-name="X 1"><div data-tooltip>Multiple instances of the same variable name in the patterns of a single clause means the values at these places must match.</div>X</span> <span class="bracket" data-name="[] 1"><div data-tooltip>Square bracket patterns match on a list.</div>[</span><span class="variable" data-name="X 1"><div data-tooltip>Multiple instances of the same variable name in the patterns of a single clause means the values at these places must match.</div>X</span> <span class="bracket" data-name="[] 1"><div data-tooltip>Square bracket patterns match on a list.</div>|</span> <span class="wildcard" data-name="_ 2"><div data-tooltip>A wildcard on the right side of the bar in a list pattern means the list pattern will match on any number of any values in the rest of the list.</div>_</span><span class="bracket" data-name="[] 1"><div data-tooltip>Square bracket patterns match on a list.</div>]</span> <span class="operator" data-name="->"><div data-tooltip>The <code><span class="operator">-&gt;</span></code> operator separates the parameter patterns from the body action in a clause.</div>-&gt;</span> <span class="literal" data-name="true 1"><div data-tooltip>The literal boolean true value in Shen is just the symbol <code><span class="literal">true</span></code>. But it won't be considered a symbol by the <code><span class="identifier">symbol?</span></code> function.</div>true</span></span>
+<span class="clause" data-name="#clause 3"><div data-tooltip>The third clause applies when the second argument is a non-empty list and then recursively calls <code><span class="identifier">element?</span></code> with the key value and the tail of the argument list.</div>  <span class="variable" data-name="X 2"><div data-tooltip><code><span class="variable">X</span></code> is unconditionally bound to the first argument.</div>X</span> <span class="bracket" data-name="[] 2"><div data-tooltip>Square bracket patterns match on a list.</div>[</span><span class="wildcard" data-name="_ 3"><div data-tooltip>A wildcard on the left side of the bar means the list needs to be long enough to have a list element in that position, but it doesn't matter what the element is.</div>_</span> <span class="bracket" data-name="[] 2"><div data-tooltip>Square bracket patterns match on a list.</div>|</span> <span class="variable" data-name="Y 2"><div data-tooltip>Since <code><span class="variable">Y</span></code> is on the right side of the bar, it is bound to the tail of the list.</div>Y</span><span class="bracket" data-name="[] 2"><div data-tooltip>Square bracket patterns match on a list.</div>]</span> <span class="operator" data-name="->"><div data-tooltip>The <code><span class="operator">-&gt;</span></code> operator separates the parameter patterns from the body action in a clause.</div>-&gt;</span> <span class="bracket" data-name="() 2"><div data-tooltip>Function calls and special forms are surrounded in parenthesis.</div>(</span><span class="identifier" data-name="element?"><div data-tooltip>Tail-recursive call passing the same key element and the tail of the target list.</div>element?</span> <span class="variable" data-name="X 2"><div data-tooltip><code><span class="variable">X</span></code> is unconditionally bound to the first argument.</div>X</span> <span class="variable" data-name="Y 2"><div data-tooltip><code><span class="variable">Y</span></code> is bound to the tail of the list argument.</div>Y</span><span class="bracket" data-name="() 2"><div data-tooltip>Function calls and special forms are surrounded in parenthesis.</div>)</span></span><span class="bracket" data-name="() 1"><div data-tooltip>Function calls and special forms are surrounded in parenthesis.</div>)</span></code></pre></div>
+<div id="tooltip-area"></div>
+<script>
+  Map.prototype.getOrAdd = function (k, f) {
+    const x = this.get(k);
+    if (x !== undefined) {
+      return x;
+    }
+    const y = f(k);
+    this.set(k, y);
+    return y;
+  };
+  const stopPropagation = f => event => {
+    event.stopPropagation();
+    return f();
+  };
+  const idMap = new Map();
+  for (const e of document.querySelectorAll('span[data-name]')) {
+    idMap.getOrAdd(e.dataset.name, () => []).push(e);
+  }
+  for (const [name, es] of idMap) {
+    for (const e of es) {
+      e.addEventListener('mouseover', stopPropagation(() => {
+        for (const e of es) {
+          e.classList.add('glow');
+        }
+      }));
+      e.addEventListener('mouseout', stopPropagation(() => {
+        for (const e of es) {
+          e.classList.remove('glow');
+        }
+      }));
+    }
+  }
+  const tooltipArea = document.getElementById('tooltip-area');
+  for (const e of document.querySelectorAll('div[data-tooltip]')) {
+    const parent = e.parentNode;
+    parent.removeChild(e);
+    parent.addEventListener('mouseover', stopPropagation(() => tooltipArea.appendChild(e)));
+    parent.addEventListener('mouseout', stopPropagation(() => tooltipArea.removeChild(e)));
+  }
+</script>
+</body>
